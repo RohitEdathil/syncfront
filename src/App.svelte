@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Home from "./lib/pages/Home.svelte";
-  import TypeSync from "./lib/pages/TypeSync.svelte";
+  import Home from "./lib/home/Home.svelte";
+  import TypeSync from "./lib/typesync/TypeSync.svelte";
 
   import { Router, Route } from "svelte-navigator";
 </script>
