@@ -1,10 +1,36 @@
 <script lang="ts">
-  function join() {
-    console.log("join");
+  import { BackendUrl } from "../../constants";
+  import { useNavigate } from "svelte-navigator";
+  import loadingGif from "../../assets/loading-gif.gif";
+
+  let id: string;
+
+  let loading = false;
+  let error = false;
+
+  const navigate = useNavigate();
+
+  async function join() {
+    if (id == undefined || id == "") return;
+
+    loading = true;
+    const response = await fetch(`${BackendUrl}/api/code/${id}`);
+    loading = false;
+
+    if (response.status == 200) {
+      navigate(`/${id}`);
+    } else {
+      error = true;
+    }
   }
 
   function create() {
     console.log("create");
+  }
+
+  function clearError() {
+    console.log("Trying to clear error");
+    error = false;
   }
 </script>
 
@@ -16,12 +42,29 @@
   <h3>Or</h3>
 
   <div id="btns">
-    <input type="text" placeholder="Enter code" />
-    <button id="join" on:click={join}>Join</button>
+    <input
+      type="text"
+      placeholder="Enter code"
+      on:input={clearError}
+      bind:value={id}
+      class={error ? "error smooth" : "smooth"}
+    />
+
+    <button id="join" on:click={join} class="smooth">
+      {#if loading}
+        <img src={loadingGif} style="height: 17px;" alt="" />
+      {:else}
+        Join
+      {/if}
+    </button>
   </div>
 </div>
 
 <style>
+  .error {
+    border-bottom: 3px solid red;
+  }
+
   #btns {
     display: flex;
     flex-direction: row;
