@@ -108,4 +108,12 @@
     padding: 0.7em 1.2em;
     font-size: 1em;
   }
+
+  #container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+    align-items: center;
+  }
 </style>
