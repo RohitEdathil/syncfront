@@ -11,12 +11,15 @@
   const navigate = useNavigate();
 
   async function join() {
+    // Ignore blank id
     if (id == undefined || id == "") return;
 
+    // Check if id exists
     loading = true;
     const response = await fetch(`${BackendUrl}/api/code/${id}`);
     loading = false;
 
+    // If id exists, navigate to it
     if (response.status == 200) {
       navigate(`/${id}`);
     } else {
@@ -24,8 +27,16 @@
     }
   }
 
-  function create() {
-    console.log("create");
+  async function create() {
+    // Create new id
+    const response = await (await fetch(`${BackendUrl}/api/code/new`)).json();
+
+    // Set id and secret as cookies
+    window.localStorage.setItem("id", response.id);
+    window.localStorage.setItem("secret", response.secret);
+
+    // Navigate to created id
+    navigate(`/${response.id}`);
   }
 
   function clearError() {
