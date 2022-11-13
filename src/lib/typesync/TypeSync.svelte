@@ -55,7 +55,6 @@
 
   ws.onmessage = (ev) => {
     const message = JSON.parse(ev.data);
-    console.log(message);
 
     if (message.type == "code-state") {
       textStore.set(message.data);
@@ -81,7 +80,6 @@
   }
   function sendHandler() {
     if (text == undefined) return;
-    console.log(text);
     ws.send(JSON.stringify({ type: "code-state", data: text }));
   }
 </script>
