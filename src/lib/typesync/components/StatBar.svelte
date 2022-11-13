@@ -9,7 +9,11 @@
   <button on:click={copyHandler}>Copy text</button>
 
   {#if listenMode == false}
-    <button on:click={sendHandler} disabled={!connected}>Send</button>
+    <button
+      title="Shortcut: Ctrl + Enter"
+      on:click={sendHandler}
+      disabled={!connected}>Send</button
+    >
   {/if}
 </div>
 

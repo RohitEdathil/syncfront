@@ -12,8 +12,11 @@
 
 <div>
   <h1>TypeSync</h1>
-  <button on:click={copyCode}>{id}</button>
-  <div class="dot {connected ? 'green' : 'red'}" />
+  <button on:click={copyCode} title="Click to copy link">{id}</button>
+  <div
+    class="dot {connected ? 'green' : 'red'}"
+    title={connected ? "Connected" : "Disconnected"}
+  />
 </div>
 
 <style>

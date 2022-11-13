@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { escape } from "svelte/internal";
   import { WSServerUrl } from "../../constants";
   import { message } from "../popup/store";
   import StatBar from "./components/StatBar.svelte";
@@ -56,8 +55,9 @@
 
   ws.onmessage = (ev) => {
     const message = JSON.parse(ev.data);
+    console.log(message);
 
-    if (message.type == "code-diff" && listenMode == true) {
+    if (message.type == "code-state") {
       textStore.set(message.data);
     } else if (message.type == "error") {
       message.set(message.data);
@@ -68,6 +68,13 @@
     text = value;
   });
 
+  function handleShortcuts(e: KeyboardEvent) {
+    if (e.key == "Enter" && e.shiftKey) {
+      e.preventDefault();
+      sendHandler();
+    }
+  }
+
   function copyHandler() {
     navigator.clipboard.writeText(text);
     message.set("Text Copied to clipboard");
@@ -75,13 +82,13 @@
   function sendHandler() {
     if (text == undefined) return;
     console.log(text);
-    ws.send(JSON.stringify({ type: "code-diff", data: text }));
+    ws.send(JSON.stringify({ type: "code-state", data: text }));
   }
 </script>
 
 <div id="container">
   <TopBar {id} {connected} />
-  <div id="inner">
+  <div id="inner" on:keypress={handleShortcuts}>
     <TextBox {listenMode} />
     <StatBar {copyHandler} {sendHandler} {connected} {listenMode} />
   </div>
