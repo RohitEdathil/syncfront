@@ -3,6 +3,7 @@
   import TypeSync from "./lib/typesync/TypeSync.svelte";
 
   import { Router, Route } from "svelte-navigator";
+  import Popup from "./lib/popup/Popup.svelte";
 </script>
 
 <main>
@@ -13,6 +14,8 @@
       <TypeSync id={params.id} />
     </Route>
   </Router>
+
+  <Popup />
 </main>
 
 <style>
@@ -20,5 +23,6 @@
     height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: column;
   }
 </style>

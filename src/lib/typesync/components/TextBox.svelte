@@ -1,18 +1,30 @@
 <script lang="ts">
-  export let id: string;
+  import hcode from "highlighted-code";
+  import { textStore } from "../store";
+
+  export let listenMode: boolean;
+
+  hcode.useTheme("github-dark");
 </script>
 
-<div>
-  <h1>TypeSync</h1>
-  <p>id: {id}</p>
-  <button>Copy</button>
-</div>
+<!-- svelte-ignore avoid-is -->
+<textarea
+  bind:value={$textStore}
+  is="highlighted-code"
+  spellcheck="false"
+  disabled={listenMode ? true : false}
+/>
 
 <style>
-  div {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
+  textarea {
+    margin: 10px;
+    padding: 10px;
+    resize: none;
+    flex: 4;
+    border: 0;
+    border-radius: 9px;
+    background-color: #05060c !important;
+    font-family: monospace;
+    font-size: 17px;
   }
 </style>

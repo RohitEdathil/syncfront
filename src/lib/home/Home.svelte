@@ -16,7 +16,7 @@
 
     // Check if id exists
     loading = true;
-    const response = await fetch(`${BackendUrl}/api/code/${id}`);
+    const response = await fetch(`${BackendUrl}/code/${id}`);
     loading = false;
 
     // If id exists, navigate to it
@@ -29,7 +29,7 @@
 
   async function create() {
     // Create new id
-    const response = await (await fetch(`${BackendUrl}/api/code/new`)).json();
+    const response = await (await fetch(`${BackendUrl}/code/new`)).json();
 
     // Set id and secret as cookies
     window.localStorage.setItem("id", response.id);
