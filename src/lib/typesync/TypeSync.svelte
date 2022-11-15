@@ -12,6 +12,11 @@
   let listenMode = true;
   let connected = false;
 
+  let isGreen = true;
+
+  let flagCount = 0;
+  let greenFlagCount = 0;
+
   // Checks for stored credentials
   const storedId = window.localStorage.getItem("id");
   const storedSecret = window.localStorage.getItem("secret");
@@ -54,12 +59,24 @@
   };
 
   ws.onmessage = (ev) => {
-    const message = JSON.parse(ev.data);
+    const wsMessage = JSON.parse(ev.data);
 
-    if (message.type == "code-state") {
-      textStore.set(message.data);
-    } else if (message.type == "error") {
-      message.set(message.data);
+    switch (wsMessage.type) {
+      case "code-state":
+        textStore.set(wsMessage.data);
+        break;
+
+      case "flag-count":
+        flagCount = wsMessage.data;
+        break;
+
+      case "green-flag-count":
+        greenFlagCount = wsMessage.data;
+        break;
+
+      default:
+        message.set(wsMessage.data);
+        break;
     }
   };
 
@@ -82,13 +99,27 @@
     if (text == undefined) return;
     ws.send(JSON.stringify({ type: "code-state", data: text }));
   }
+
+  function switchHandler() {
+    isGreen = !isGreen;
+    ws.send(JSON.stringify({ type: "flag-switch" }));
+  }
 </script>
 
 <div id="container">
   <TopBar {id} {connected} />
   <div id="inner" on:keypress={handleShortcuts}>
     <TextBox {listenMode} />
-    <StatBar {copyHandler} {sendHandler} {connected} {listenMode} />
+    <StatBar
+      {copyHandler}
+      {sendHandler}
+      {switchHandler}
+      {connected}
+      {listenMode}
+      {isGreen}
+      {flagCount}
+      {greenFlagCount}
+    />
   </div>
 </div>
 
