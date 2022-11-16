@@ -6,6 +6,7 @@
   let id: string;
 
   let loading = false;
+  let loadingCreate = false;
   let error = false;
 
   const navigate = useNavigate();
@@ -29,7 +30,9 @@
 
   async function create() {
     // Create new id
+    loadingCreate = true;
     const response = await (await fetch(`${BackendUrl}/code/new`)).json();
+    loadingCreate = false;
 
     // Set id and secret as cookies
     window.localStorage.setItem("id", response.id);
@@ -48,7 +51,13 @@
 <div id="container">
   <h1>TypeSync</h1>
   <h2>An easy way to share code live and get live feedback</h2>
-  <button id="create" on:click={create}>Create</button>
+  <button id="create" on:click={create}>
+    {#if loadingCreate}
+      <img src={loadingGif} style="height: 17px;" alt="" />
+    {:else}
+      Create
+    {/if}</button
+  >
 
   <h3>Or</h3>
 
